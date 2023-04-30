@@ -17,6 +17,7 @@ import Data.List (delete, find)
 import Data.Maybe (fromJust)
 import Data.Text.Prettyprint.Doc
 import Prettyprinter.Render.Text
+import Prettyprinter.Render.String
 
 type Binding = (String, Lambda)
 
@@ -31,7 +32,9 @@ data Lambda
   | Letrec !Binding !Lambda
   | Mutate !String !Lambda
   | Sequence !Lambda !Lambda
-  deriving(Show)
+
+instance Show Lambda where
+   showsPrec _ = renderShowS . layoutPretty defaultLayoutOptions . pretty
 
 data Operation = Write | Add1 | Sub1 | IsZero | Add2 | Sub2 | Mul | GT | LT | EQ | NE | LE | GE deriving (Show)
 

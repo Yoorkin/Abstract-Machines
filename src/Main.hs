@@ -25,8 +25,11 @@ main :: IO ()
 main = do
     -- eval lambda
     let input = lambda
+    putStrLn "lambda:"
     putDocW 40 (pretty input)
+    putStrLn "\nside effects:"
     r <- eval input
+    putStrLn "eval result:"
     print r 
     return ()
   where
