@@ -3,7 +3,7 @@ E:\sources\machines\CHANGELOG.md:
 E:\sources\machines\README.md:
   hash: d4d3d3f138058586dcda2f2ccda343aea3a331cd0813c307d763241f9ff9757e
 E:\sources\machines\machines.cabal:
-  hash: 4ade61f8394f92cf4e4a8f17460c8ccc7bd86dca641536871d0ea9a748d251d5
+  hash: d9124f4ff3b38a61b7ee2050f668acc9c61bdfd505ae3589f931934156b1a41d
 E:\sources\machines\src\Builtin.hs:
   hash: 061740588a7241f3e06016212d4ad584d0d1a9b184008facff6732538d039f9e
 E:\sources\machines\src\CCMachine.hs:
@@ -11,10 +11,10 @@ E:\sources\machines\src\CCMachine.hs:
 E:\sources\machines\src\CEKMachine.hs:
   hash: e00fc9183a16eedcd19c810e77c3064127a6175339a63692e625058741116eae
 E:\sources\machines\src\CESKMachine.hs:
-  hash: ee6c0434dbfd2b800cd1b500fe16743a68767cbc46376e145f31157a02426245
+  hash: 8a62bae9f8c9b8590849ca8963961abba253ec6a714cbb3849b692d6de89af99
 E:\sources\machines\src\Lambda.hs:
-  hash: 052a3e443c51cd290a0a9598f1bb5dd953bbe750618261c27248dce579527cb0
+  hash: 7c1ba21d7cedce11e31ec60ffc842afa5d5f2d29bb4d1c5c1868f9aae067ad86
 E:\sources\machines\src\Main.hs:
-  hash: 831c3be79f85a416dcbb4890a4aa34e95c03e68942c49d11fe0a3c194ea2f014
+  hash: 85f830183ba0106754759dba6245a10009dd2215cd0b0a4b7fb1c92901ede45a
 E:\sources\machines\src\Pass.hs:
   hash: 1d0036b8fb862591443a7c5882335ef805cd3e1d3c88ac6ec1b28285b35548c5

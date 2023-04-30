@@ -3,7 +3,8 @@ import Lambda
 import CESKMachine
 import Pass
 import Debug.Trace
-
+import Data.Text.Prettyprint.Doc
+import Prettyprinter.Util
 
 testSeq = Sequence (Mutate "a" (Const $ Integer 1919810)) (Var "a")
 
@@ -18,12 +19,14 @@ recFib = Letrec ("fib", Abstract "x"
                       ]
                     )
                   )) $
-    Prim Write [Apply (Var "fib") (Const (Integer 35))]
+    Prim Write [Apply (Var "fib") (Const (Integer 9))]
 
 main :: IO ()
 main = do
     -- eval lambda
-    r <- eval recFib
+    let input = lambda
+    putDocW 40 (pretty input)
+    r <- eval input
     print r 
     return ()
   where
@@ -41,7 +44,8 @@ main = do
     lambda = Prim Write [
               Let ("number", Const (Integer 114514)) $
                 Let ("subX", Abstract "x" (Prim Sub2 [Var "number", Var "x"])) $
-                  Let ("addX", Abstract "x" (Prim Add2 [Var "number", Var "x"]))
+                  Let ("addX", Abstract "x" (Prim Add2 [Var "number", Var "x"])) $
+                    Sequence (Prim Write [Const Unit])
                     (If (Prim Lambda.GT [Const (Integer 5), Const (Integer 6)])
                         (Apply (Var "subX") (Const $ Integer 1))
                         (Apply (Var "addX") (Const $ Integer 2))

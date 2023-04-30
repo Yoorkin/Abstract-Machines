@@ -1,0 +1,182 @@
+	Sun Apr 30 14:47 2023 Time and Allocation Profiling Report  (Final)
+
+	   machines.EXE +RTS -p -RTS
+
+	total time  =        4.76 secs   (4764 ticks @ 1000 us, 1 processor)
+	total alloc = 87,193,306,840 bytes  (excludes profiling overheads)
+
+COST CENTRE               MODULE                  SRC                                          %time %alloc
+
+trans                     CESKMachine             src\CESKMachine.hs:(86,1)-(149,51)            43.3   57.1
+lookup#                   Data.HashMap.Internal   Data\HashMap\Internal.hs:609:1-82              9.1    0.0
+liftHashWithSalt          Data.Hashable.Class     src\Data\Hashable\Class.hs:(644,5)-(647,46)    6.8    0.0
+invoke                    Builtin                 src\Builtin.hs:(6,1)-(67,70)                   5.8    8.9
+hashInt                   Data.Hashable.LowLevel  src\Data\Hashable\LowLevel.hs:65:1-41          3.6    6.0
+trans.ns'                 CESKMachine             src\CESKMachine.hs:133:7-29                    3.5   11.0
+liftHashWithSalt.step     Data.Hashable.Class     src\Data\Hashable\Class.hs:647:9-46            3.5    3.6
+defaultHashWithSalt       Data.Hashable.Class     src\Data\Hashable\Class.hs:297:1-50            3.1    0.0
+liftHashWithSalt.finalise Data.Hashable.Class     src\Data\Hashable\Class.hs:646:9-44            2.9    4.9
+hash                      Data.Hashable.Class     src\Data\Hashable\Class.hs:373:5-19            2.4    3.6
+hashWithSalt1             Data.Hashable.Class     src\Data\Hashable\Class.hs:278:1-45            2.3    0.0
+insert'.go                Data.HashMap.Internal   Data\HashMap\Internal.hs:(774,5)-(803,76)      2.0    3.0
+hashWithSalt              Data.Hashable.Class     src\Data\Hashable\Class.hs:323:5-26            1.9    0.0
+hash                      Data.HashMap.Internal   Data\HashMap\Internal.hs:180:1-28              1.8    0.0
+lookEnv                   CESKMachine             src\CESKMachine.hs:33:1-25                     1.7    0.0
+hashWithSalt              Data.Hashable.Class     src\Data\Hashable\Class.hs:374:5-38            1.2    0.0
+primitive                 Control.Monad.Primitive Control\Monad\Primitive.hs:95:3-16             1.1    0.0
+basicUnsafeRead           Data.Vector.Mutable     Data\Vector\Mutable.hs:132:3-59                0.4    1.1
+
+
+                                                                                                                                    individual      inherited
+COST CENTRE                            MODULE                       SRC                                         no.      entries  %time %alloc   %time %alloc
+
+MAIN                                   MAIN                         <built-in>                                   736           0    0.0    0.0   100.0  100.0
+ CAF                                   GHC.IO.StdHandles            <entire-module>                             1384           0    0.0    0.0     0.0    0.0
+ CAF                                   GHC.IO.Handle.Text           <entire-module>                             1380           0    0.0    0.0     0.0    0.0
+ CAF                                   GHC.IO.Handle.FD             <entire-module>                             1378           0    0.0    0.0     0.0    0.0
+ CAF                                   GHC.IO.Encoding.CodePage     <entire-module>                             1369           0    0.0    0.0     0.0    0.0
+ CAF                                   GHC.IO.Encoding              <entire-module>                             1368           0    0.0    0.0     0.0    0.0
+ CAF:$fHashable1IntMap_$chashWithSalt  Data.Hashable.Class          src\Data\Hashable\Class.hs:323:5-16         1156           0    0.0    0.0     0.0    0.0
+  hashWithSalt                         Data.Hashable.Class          src\Data\Hashable\Class.hs:323:5-26         1511           1    0.0    0.0     0.0    0.0
+ CAF:$fHashableChar_$chash             Data.Hashable.Class          src\Data\Hashable\Class.hs:373:5-8          1162           0    0.0    0.0     0.0    0.0
+  hash                                 Data.Hashable.Class          src\Data\Hashable\Class.hs:373:5-19         1507           1    0.0    0.0     0.0    0.0
+ CAF:$fHashableChar_$chashWithSalt     Data.Hashable.Class          src\Data\Hashable\Class.hs:374:5-16         1180           0    0.0    0.0     0.0    0.0
+  hashWithSalt                         Data.Hashable.Class          src\Data\Hashable\Class.hs:374:5-38         1504           1    0.0    0.0     0.0    0.0
+ CAF:$fHashable[]_$s$chash             Data.Hashable.Class          src\Data\Hashable\Class.hs:639:10-35        1185           0    0.0    0.0     0.0    0.0
+  hash                                 Data.Hashable.Class          src\Data\Hashable\Class.hs:231:5-35         1496           1    0.0    0.0     0.0    0.0
+   hashWithSalt                        Data.Hashable.Class          src\Data\Hashable\Class.hs:641:5-32         1497           1    0.0    0.0     0.0    0.0
+    hashWithSalt1                      Data.Hashable.Class          src\Data\Hashable\Class.hs:278:1-45         1498           1    0.0    0.0     0.0    0.0
+ CAF:$fShowConstant4                   Lambda                       <no location info>                           760           0    0.0    0.0     0.0    0.0
+ CAF:bitsPerSubkey                     Data.HashMap.Internal        Data\HashMap\Internal.hs:2383:1-13          1130           0    0.0    0.0     0.0    0.0
+  bitsPerSubkey                        Data.HashMap.Internal        Data\HashMap\Internal.hs:2383:1-17          1589           1    0.0    0.0     0.0    0.0
+ CAF:doBoundsChecks                    Data.Vector.Internal.Check   Data\Vector\Internal\Check.hs:55:1-14        865           0    0.0    0.0     0.0    0.0
+  doBoundsChecks                       Data.Vector.Internal.Check   Data\Vector\Internal\Check.hs:55:1-21       1480           1    0.0    0.0     0.0    0.0
+ CAF:doUnsafeChecks                    Data.Vector.Internal.Check   Data\Vector\Internal\Check.hs:64:1-14        866           0    0.0    0.0     0.0    0.0
+  doUnsafeChecks                       Data.Vector.Internal.Check   Data\Vector\Internal\Check.hs:64:1-22       1481           1    0.0    0.0     0.0    0.0
+ CAF:empty                             Data.HashMap.Internal        Data\HashMap\Internal.hs:565:1-5            1121           0    0.0    0.0     0.0    0.0
+  empty                                Data.HashMap.Internal        Data\HashMap\Internal.hs:565:1-13           1492           1    0.0    0.0     0.0    0.0
+ CAF:emptyEnv                          CESKMachine                  src\CESKMachine.hs:25:1-8                    814           0    0.0    0.0     0.0    0.0
+  emptyEnv                             CESKMachine                  src\CESKMachine.hs:25:1-20                  1491           1    0.0    0.0     0.0    0.0
+ CAF:eval3                             CESKMachine                  <no location info>                           816           0    0.0    0.0     0.0    0.0
+  emptyStore                           CESKMachine                  src\CESKMachine.hs:(37,1)-(39,40)           1475           1    0.0    0.0     0.0    0.0
+ CAF:eval4                             CESKMachine                  <no location info>                           815           0    0.0    0.0     0.0    0.0
+  emptyStore                           CESKMachine                  src\CESKMachine.hs:(37,1)-(39,40)           1478           0    0.0    0.0     0.0    0.0
+   internal                            Control.Monad.Primitive      Control\Monad\Primitive.hs:210:3-21         1479           1    0.0    0.0     0.0    0.0
+ CAF:f1_r28I                           Lambda                       <no location info>                           744           0    0.0    0.0     0.0    0.0
+ CAF:main1                             Main                         <no location info>                           863           0    0.0    0.0     0.0    0.0
+  main                                 Main                         src\Main.hs:(24,1)-(49,14)                  1472           1    0.0    0.0     0.0    0.0
+ CAF:main34                            Main                         <no location info>                           860           0    0.0    0.0     0.0    0.0
+ CAF:main9                             Main                         <no location info>                           861           0    0.0    0.0     0.0    0.0
+ CAF:recFib                            Main                         src\Main.hs:12:1-6                           862           0    0.0    0.0     0.0    0.0
+  recFib                               Main                         src\Main.hs:(12,1)-(21,55)                  1490           1    0.0    0.0     0.0    0.0
+ CAF:subkeyMask                        Data.HashMap.Internal        Data\HashMap\Internal.hs:2391:1-10          1133           0    0.0    0.0     0.0    0.0
+  subkeyMask                           Data.HashMap.Internal        Data\HashMap\Internal.hs:2391:1-47          1588           1    0.0    0.0     0.0    0.0
+ main                                  Main                         src\Main.hs:(24,1)-(49,14)                  1473           0    0.0    0.0   100.0  100.0
+  eval                                 CESKMachine                  src\CESKMachine.hs:(163,1)-(166,34)         1474           1    0.0    0.0   100.0  100.0
+   trans                               CESKMachine                  src\CESKMachine.hs:(86,1)-(149,51)          1489   477771247   43.3   57.1   100.0  100.0
+    isValue                            Lambda                       src\Lambda.hs:(133,1)-(137,12)              1569   164233864    0.0    0.0     0.0    0.0
+    lookEnv                            CESKMachine                  src\CESKMachine.hs:33:1-25                  1547   104512460    1.7    0.0    35.2   14.8
+     !                                 Data.HashMap.Internal        Data\HashMap\Internal.hs:(738,1)-(740,63)   1548   104512460    0.8    0.0    33.5   14.8
+      lookup#                          Data.HashMap.Internal        Data\HashMap\Internal.hs:609:1-82           1549   104512460    9.1    0.0    32.7   14.8
+       hash                            Data.HashMap.Internal        Data\HashMap\Internal.hs:180:1-28           1550   104512460    1.3    0.0    23.6   14.8
+        hash                           Data.Hashable.Class          src\Data\Hashable\Class.hs:231:5-35         1551           0    0.0    0.0    22.3   14.8
+         hashWithSalt                  Data.Hashable.Class          src\Data\Hashable\Class.hs:641:5-32         1552           0    0.0    0.0    22.3   14.8
+          hashWithSalt1                Data.Hashable.Class          src\Data\Hashable\Class.hs:278:1-45         1553           0    1.6    0.0    22.3   14.8
+           liftHashWithSalt            Data.Hashable.Class          src\Data\Hashable\Class.hs:(644,5)-(647,46) 1554   104512460    5.7    0.0    20.6   14.8
+            liftHashWithSalt.step      Data.Hashable.Class          src\Data\Hashable\Class.hs:647:9-46         1555   164233866    2.9    3.0     9.7    9.0
+             hashWithSalt              Data.Hashable.Class          src\Data\Hashable\Class.hs:374:5-38         1556           0    0.9    0.0     6.8    6.0
+              defaultHashWithSalt      Data.Hashable.Class          src\Data\Hashable\Class.hs:297:1-50         1557   164233866    2.6    0.0     5.9    6.0
+               hashInt                 Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1559   164233866    1.4    3.0     1.4    3.0
+               hash                    Data.Hashable.Class          src\Data\Hashable\Class.hs:373:5-19         1558           0    1.9    3.0     1.9    3.0
+            liftHashWithSalt.finalise  Data.Hashable.Class          src\Data\Hashable\Class.hs:646:9-44         1560   104512460    2.3    3.8     5.2    5.8
+             hashWithSalt              Data.Hashable.Class          src\Data\Hashable\Class.hs:323:5-26         1561           0    1.4    0.0     2.9    1.9
+              hashInt                  Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1562   104512460    1.5    1.9     1.5    1.9
+       lookup#.\                       Data.HashMap.Internal        Data\HashMap\Internal.hs:609:58-66          1563   104512460    0.0    0.0     0.0    0.0
+       unArray                         Data.HashMap.Internal.Array  Data\HashMap\Internal\Array.hs:126:7-13     1591   104512459    0.0    0.0     0.0    0.0
+    invoke                             Builtin                      src\Builtin.hs:(6,1)-(67,70)                1592    74651757    5.8    8.9     5.8    8.9
+     invoke.b'                         Builtin                      src\Builtin.hs:(28,5)-(66,35)               1593    74651756    0.0    0.0     0.0    0.0
+     invoke.b'                         Builtin                      src\Builtin.hs:(9,5)-(24,33)                1594           1    0.0    0.0     0.0    0.0
+    trans.ns'                          CESKMachine                  src\CESKMachine.hs:133:7-29                 1546    74651757    3.5   11.0     3.5   11.0
+    appendEnv                          CESKMachine                  src\CESKMachine.hs:30:1-42                  1570    29860703    0.4    0.0     9.8    7.1
+     insert                            Data.HashMap.Internal.Strict Data\HashMap\Internal\Strict.hs:179:1-27    1571    29860703    0.3    0.8     9.4    7.1
+      insert                           Data.HashMap.Internal        Data\HashMap\Internal.hs:768:1-37           1572    29860703    0.8    0.0     9.1    6.3
+       hash                            Data.HashMap.Internal        Data\HashMap\Internal.hs:180:1-28           1573    29860703    0.5    0.0     5.8    3.3
+        hash                           Data.Hashable.Class          src\Data\Hashable\Class.hs:231:5-35         1574           0    0.0    0.0     5.3    3.3
+         hashWithSalt                  Data.Hashable.Class          src\Data\Hashable\Class.hs:641:5-32         1575           0    0.0    0.0     5.3    3.3
+          hashWithSalt1                Data.Hashable.Class          src\Data\Hashable\Class.hs:278:1-45         1576           0    0.6    0.0     5.3    3.3
+           liftHashWithSalt            Data.Hashable.Class          src\Data\Hashable\Class.hs:(644,5)-(647,46) 1577    29860703    1.0    0.0     4.7    3.3
+            liftHashWithSalt.finalise  Data.Hashable.Class          src\Data\Hashable\Class.hs:646:9-44         1583    29860703    0.6    1.1     1.5    1.6
+             hashWithSalt              Data.Hashable.Class          src\Data\Hashable\Class.hs:323:5-26         1584           0    0.5    0.0     0.9    0.5
+              hashInt                  Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1585    29860703    0.4    0.5     0.4    0.5
+            liftHashWithSalt.step      Data.Hashable.Class          src\Data\Hashable\Class.hs:647:9-46         1578    29860703    0.6    0.5     2.2    1.6
+             hashWithSalt              Data.Hashable.Class          src\Data\Hashable\Class.hs:374:5-38         1579           0    0.2    0.0     1.6    1.1
+              defaultHashWithSalt      Data.Hashable.Class          src\Data\Hashable\Class.hs:297:1-50         1580    29860703    0.5    0.0     1.3    1.1
+               hashInt                 Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1582    29860703    0.4    0.5     0.4    0.5
+               hash                    Data.Hashable.Class          src\Data\Hashable\Class.hs:373:5-19         1581           0    0.4    0.5     0.4    0.5
+       insert'                         Data.HashMap.Internal        Data\HashMap\Internal.hs:(772,1)-(803,76)   1586    29860703    0.4    0.0     2.5    3.0
+        insert'.go                     Data.HashMap.Internal        Data\HashMap\Internal.hs:(774,5)-(803,76)   1587    29860703    2.0    3.0     2.0    3.0
+         unMArray                      Data.HashMap.Internal.Array  Data\HashMap\Internal\Array.hs:158:7-14     1590    59721406    0.0    0.0     0.0    0.0
+    getStore                           CESKMachine                  src\CESKMachine.hs:57:1-34                  1564    29860703    0.9    0.0     2.4    1.1
+     basicUnsafeRead                   Data.Vector.Mutable          Data\Vector\Mutable.hs:132:3-59             1566    29860703    0.4    1.1     1.4    1.1
+      primitive                        Control.Monad.Primitive      Control\Monad\Primitive.hs:95:3-16          1567    29860703    1.1    0.0     1.1    0.0
+       marray#                         Data.Primitive.Array         Data\Primitive\Array.hs:84:5-11             1568    29860703    0.0    0.0     0.0    0.0
+     vec                               CESKMachine                  src\CESKMachine.hs:19:22-24                 1565    29860703    0.0    0.0     0.0    0.0
+    setStore                           CESKMachine                  src\CESKMachine.hs:(42,1)-(54,87)           1493           2    0.0    0.0     0.0    0.0
+     basicLength                       Data.Vector.Mutable          Data\Vector\Mutable.hs:103:3-33             1517           2    0.0    0.0     0.0    0.0
+     basicUnsafeWrite                  Data.Vector.Mutable          Data\Vector\Mutable.hs:135:3-65             1522           2    0.0    0.0     0.0    0.0
+      primitive                        Control.Monad.Primitive      Control\Monad\Primitive.hs:95:3-16          1523           2    0.0    0.0     0.0    0.0
+       marray#                         Data.Primitive.Array         Data\Primitive\Array.hs:84:5-11             1524           2    0.0    0.0     0.0    0.0
+     lookup#                           Data.HashMap.Internal        Data\HashMap\Internal.hs:609:1-82           1494           2    0.0    0.0     0.0    0.0
+      hash                             Data.HashMap.Internal        Data\HashMap\Internal.hs:180:1-28           1495           2    0.0    0.0     0.0    0.0
+       hash                            Data.Hashable.Class          src\Data\Hashable\Class.hs:231:5-35         1499           0    0.0    0.0     0.0    0.0
+        hashWithSalt                   Data.Hashable.Class          src\Data\Hashable\Class.hs:641:5-32         1500           0    0.0    0.0     0.0    0.0
+         hashWithSalt1                 Data.Hashable.Class          src\Data\Hashable\Class.hs:278:1-45         1501           0    0.0    0.0     0.0    0.0
+          liftHashWithSalt             Data.Hashable.Class          src\Data\Hashable\Class.hs:(644,5)-(647,46) 1502           2    0.0    0.0     0.0    0.0
+           liftHashWithSalt.step       Data.Hashable.Class          src\Data\Hashable\Class.hs:647:9-46         1503           6    0.0    0.0     0.0    0.0
+            hashWithSalt               Data.Hashable.Class          src\Data\Hashable\Class.hs:374:5-38         1505           0    0.0    0.0     0.0    0.0
+             defaultHashWithSalt       Data.Hashable.Class          src\Data\Hashable\Class.hs:297:1-50         1506           6    0.0    0.0     0.0    0.0
+              hashInt                  Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1509           6    0.0    0.0     0.0    0.0
+              hash                     Data.Hashable.Class          src\Data\Hashable\Class.hs:373:5-19         1508           0    0.0    0.0     0.0    0.0
+           liftHashWithSalt.finalise   Data.Hashable.Class          src\Data\Hashable\Class.hs:646:9-44         1510           2    0.0    0.0     0.0    0.0
+            hashWithSalt               Data.Hashable.Class          src\Data\Hashable\Class.hs:323:5-26         1512           0    0.0    0.0     0.0    0.0
+             hashInt                   Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1513           2    0.0    0.0     0.0    0.0
+      lookup#.\                        Data.HashMap.Internal        Data\HashMap\Internal.hs:609:58-66          1544           1    0.0    0.0     0.0    0.0
+      lookup#.\                        Data.HashMap.Internal        Data\HashMap\Internal.hs:609:33-45          1514           1    0.0    0.0     0.0    0.0
+     appendEnv                         CESKMachine                  src\CESKMachine.hs:30:1-42                  1526           1    0.0    0.0     0.0    0.0
+      insert                           Data.HashMap.Internal.Strict Data\HashMap\Internal\Strict.hs:179:1-27    1527           1    0.0    0.0     0.0    0.0
+       insert                          Data.HashMap.Internal        Data\HashMap\Internal.hs:768:1-37           1528           1    0.0    0.0     0.0    0.0
+        hash                           Data.HashMap.Internal        Data\HashMap\Internal.hs:180:1-28           1529           1    0.0    0.0     0.0    0.0
+         hash                          Data.Hashable.Class          src\Data\Hashable\Class.hs:231:5-35         1530           0    0.0    0.0     0.0    0.0
+          hashWithSalt                 Data.Hashable.Class          src\Data\Hashable\Class.hs:641:5-32         1531           0    0.0    0.0     0.0    0.0
+           hashWithSalt1               Data.Hashable.Class          src\Data\Hashable\Class.hs:278:1-45         1532           0    0.0    0.0     0.0    0.0
+            liftHashWithSalt           Data.Hashable.Class          src\Data\Hashable\Class.hs:(644,5)-(647,46) 1533           1    0.0    0.0     0.0    0.0
+             liftHashWithSalt.step     Data.Hashable.Class          src\Data\Hashable\Class.hs:647:9-46         1534           3    0.0    0.0     0.0    0.0
+              hashWithSalt             Data.Hashable.Class          src\Data\Hashable\Class.hs:374:5-38         1535           0    0.0    0.0     0.0    0.0
+               defaultHashWithSalt     Data.Hashable.Class          src\Data\Hashable\Class.hs:297:1-50         1536           3    0.0    0.0     0.0    0.0
+                hashInt                Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1538           3    0.0    0.0     0.0    0.0
+                hash                   Data.Hashable.Class          src\Data\Hashable\Class.hs:373:5-19         1537           0    0.0    0.0     0.0    0.0
+             liftHashWithSalt.finalise Data.Hashable.Class          src\Data\Hashable\Class.hs:646:9-44         1539           1    0.0    0.0     0.0    0.0
+              hashWithSalt             Data.Hashable.Class          src\Data\Hashable\Class.hs:323:5-26         1540           0    0.0    0.0     0.0    0.0
+               hashInt                 Data.Hashable.LowLevel       src\Data\Hashable\LowLevel.hs:65:1-41       1541           1    0.0    0.0     0.0    0.0
+        insert'                        Data.HashMap.Internal        Data\HashMap\Internal.hs:(772,1)-(803,76)   1542           1    0.0    0.0     0.0    0.0
+         insert'.go                    Data.HashMap.Internal        Data\HashMap\Internal.hs:(774,5)-(803,76)   1543           1    0.0    0.0     0.0    0.0
+     setStore.closure                  CESKMachine                  src\CESKMachine.hs:48:18-64                 1525           1    0.0    0.0     0.0    0.0
+     setStore.freshAddr                CESKMachine                  src\CESKMachine.hs:47:18-35                 1520           1    0.0    0.0     0.0    0.0
+      used                             CESKMachine                  src\CESKMachine.hs:19:50-53                 1521           1    0.0    0.0     0.0    0.0
+     setStore.idx                      CESKMachine                  src\CESKMachine.hs:51:21-36                 1515           1    0.0    0.0     0.0    0.0
+      used                             CESKMachine                  src\CESKMachine.hs:19:50-53                 1516           1    0.0    0.0     0.0    0.0
+     setStore.ls                       CESKMachine                  src\CESKMachine.hs:50:21-30                 1518           1    0.0    0.0     0.0    0.0
+      vec                              CESKMachine                  src\CESKMachine.hs:19:22-24                 1519           1    0.0    0.0     0.0    0.0
+     vec                               CESKMachine                  src\CESKMachine.hs:19:22-24                 1545           1    0.0    0.0     0.0    0.0
+   eval.f                              CESKMachine                  src\CESKMachine.hs:166:15-34                1595           1    0.0    0.0     0.0    0.0
+   eval.s                              CESKMachine                  src\CESKMachine.hs:165:9-38                 1488           1    0.0    0.0     0.0    0.0
+   emptyStore                          CESKMachine                  src\CESKMachine.hs:(37,1)-(39,40)           1476           0    0.0    0.0     0.0    0.0
+    basicUnsafeWrite                   Data.Vector.Mutable          Data\Vector\Mutable.hs:135:3-65             1485         100    0.0    0.0     0.0    0.0
+     primitive                         Control.Monad.Primitive      Control\Monad\Primitive.hs:206:3-16         1486         100    0.0    0.0     0.0    0.0
+      marray#                          Data.Primitive.Array         Data\Primitive\Array.hs:84:5-11             1487         100    0.0    0.0     0.0    0.0
+    basicInitialize                    Data.Vector.Mutable          Data\Vector\Mutable.hs:123:3-31             1484           1    0.0    0.0     0.0    0.0
+    basicUnsafeNew                     Data.Vector.Mutable          Data\Vector\Mutable.hs:(116,3)-(119,32)     1482           1    0.0    0.0     0.0    0.0
+     primitive                         Control.Monad.Primitive      Control\Monad\Primitive.hs:206:3-16         1483           1    0.0    0.0     0.0    0.0
+    primitive                          Control.Monad.Primitive      Control\Monad\Primitive.hs:95:3-16          1477           1    0.0    0.0     0.0    0.0
+  showsPrec                            Lambda                       src\Lambda.hs:32:13-16                      1596           1    0.0    0.0     0.0    0.0
+   showsPrec                           Lambda                       src\Lambda.hs:41:13-16                      1597           1    0.0    0.0     0.0    0.0

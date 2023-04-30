@@ -15,6 +15,8 @@ where
 
 import Data.List (delete, find)
 import Data.Maybe (fromJust)
+import Data.Text.Prettyprint.Doc
+import Prettyprinter.Render.Text
 
 type Binding = (String, Lambda)
 
@@ -29,9 +31,43 @@ data Lambda
   | Letrec !Binding !Lambda
   | Mutate !String !Lambda
   | Sequence !Lambda !Lambda
-  deriving (Show)
+  deriving(Show)
 
 data Operation = Write | Add1 | Sub1 | IsZero | Add2 | Sub2 | Mul | GT | LT | EQ | NE | LE | GE deriving (Show)
+
+instance Pretty Operation where
+  pretty o = pretty $ case o of 
+                  Add2 -> "+"
+                  Sub2 -> "-"
+                  Mul -> "*"
+                  Lambda.LT -> "<"
+                  Lambda.GT -> ">"
+                  LE -> "<="
+                  GE -> ">="
+                  Lambda.EQ -> "=="
+                  NE -> "!="
+
+instance Pretty Lambda where
+  pretty (Var s) = pretty s
+  pretty (Abstract x m) = pretty "λ" <> pretty x <> pretty "." <> group (nest 2 $ line' <> pretty m)
+  pretty (Apply m1 m2) = pretty "(" <> group (nest 2 (pretty m1 <+> pretty m2)) <> pretty ")"
+  pretty (Prim o ms) =
+      case ms of
+          [l, r] -> pretty "(" <> pretty l <+> pretty o <+> pretty r <> pretty ")"
+          _ -> pretty (show o) <+> pretty "(" <> hsep (pretty <$> ms) <> pretty ")"
+  pretty (Const c) = pretty c
+  pretty (If c m1 m2) = 
+      group $ align (pretty "if" <+> pretty c <> nest 2 (
+      line <> pretty "then" <+> pretty m1
+      <> line <> pretty "else" <+> pretty m2))
+  pretty (Let (name,expr) body) = 
+      group $ align (pretty "let" <+> pretty name <+> pretty "=" <+> pretty expr <> line <> pretty "in" <+> pretty body)
+  pretty (Letrec (name,expr) body) =
+      group (pretty "letrec" <+> pretty name <+> pretty "=" <+> pretty expr <> line <> pretty "in" <+> pretty body)
+  pretty (Mutate name expr) = 
+      pretty name <+> pretty ":=" <+> pretty expr
+  pretty (Sequence m1 m2) = 
+      align $ pretty m1 <> pretty ";" <> line <> pretty m2
 
 data Constant
   = Integer !Int
@@ -39,6 +75,13 @@ data Constant
   | Address !Int
   | Unit
   deriving (Show)
+
+instance Pretty Constant where
+  pretty x = case x of
+    Integer i -> pretty i
+    Boolean b -> pretty b
+    Address a -> pretty "^" <+> pretty a
+    Unit -> pretty "unit"
 
 yvCombinator :: Lambda
 yvCombinator = let t = Abstract "g" (Apply (Var "f") (Abstract "x" (Apply (Apply (Var "g") (Var "g")) (Var "x"))))
