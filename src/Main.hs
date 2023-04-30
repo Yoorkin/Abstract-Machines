@@ -1,15 +1,34 @@
 module Main (main) where
 import Lambda
-import CEKMachine
+import CESKMachine
+import Pass
+import Debug.Trace
+
+
+testSeq = Sequence (Mutate "a" (Const $ Integer 1919810)) (Var "a")
+
+testRec = Letrec ("id", Abstract "x" (Var "x")) (Apply (Var "id") (Const $ Integer 111)) 
+
+recFib = Letrec ("fib", Abstract "x"
+                  (If (Prim Lambda.LT [Var "x", Const $ Integer 2])
+                    (Var "x")
+                    (Prim Add2 [
+                        Apply (Var "fib") (Prim Sub2 [Var "x", Const $ Integer 1]),
+                        Apply (Var "fib") (Prim Sub2 [Var "x", Const $ Integer 2])
+                      ]
+                    )
+                  )) $
+    Prim Write [Apply (Var "fib") (Const (Integer 35))]
 
 main :: IO ()
 main = do
     -- eval lambda
-    eval fib
+    r <- eval recFib
+    print r 
     return ()
   where
-    fib = Let ("fib", Apply yvCombinator 
-                        (Abstract "fib" (Abstract "x" 
+    fib = Let ("fib", Apply yvCombinator
+                        (Abstract "fib" (Abstract "x"
                           (If (Prim Lambda.LT [Var "x", Const $ Integer 2])
                             (Var "x")
                             (Prim Add2 [
@@ -17,7 +36,7 @@ main = do
                                 Apply (Var "fib") (Prim Sub2 [Var "x", Const $ Integer 2])
                               ]
                             )
-                          )))) $ 
+                          )))) $
             Prim Write [Apply (Var "fib") (Const (Integer 35))]
     lambda = Prim Write [
               Let ("number", Const (Integer 114514)) $

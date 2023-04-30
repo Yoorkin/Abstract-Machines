@@ -42,12 +42,12 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
-bindir     = "E:\\sources\\machines\\.stack-work\\install\\8c9cb1b0\\bin"
-libdir     = "E:\\sources\\machines\\.stack-work\\install\\8c9cb1b0\\lib\\x86_64-windows-ghc-9.2.7\\machines-0.1.0.0-EbnBIk4TYWF1ztfKvMpjY7-machines"
-dynlibdir  = "E:\\sources\\machines\\.stack-work\\install\\8c9cb1b0\\lib\\x86_64-windows-ghc-9.2.7"
-datadir    = "E:\\sources\\machines\\.stack-work\\install\\8c9cb1b0\\share\\x86_64-windows-ghc-9.2.7\\machines-0.1.0.0"
-libexecdir = "E:\\sources\\machines\\.stack-work\\install\\8c9cb1b0\\libexec\\x86_64-windows-ghc-9.2.7\\machines-0.1.0.0"
-sysconfdir = "E:\\sources\\machines\\.stack-work\\install\\8c9cb1b0\\etc"
+bindir     = "E:\\sources\\machines\\.stack-work\\install\\bb634ddb\\bin"
+libdir     = "E:\\sources\\machines\\.stack-work\\install\\bb634ddb\\lib\\x86_64-windows-ghc-9.2.7\\machines-0.1.0.0-EbnBIk4TYWF1ztfKvMpjY7-machines"
+dynlibdir  = "E:\\sources\\machines\\.stack-work\\install\\bb634ddb\\lib\\x86_64-windows-ghc-9.2.7"
+datadir    = "E:\\sources\\machines\\.stack-work\\install\\bb634ddb\\share\\x86_64-windows-ghc-9.2.7\\machines-0.1.0.0"
+libexecdir = "E:\\sources\\machines\\.stack-work\\install\\bb634ddb\\libexec\\x86_64-windows-ghc-9.2.7\\machines-0.1.0.0"
+sysconfdir = "E:\\sources\\machines\\.stack-work\\install\\bb634ddb\\etc"
 
 getBinDir     = catchIO (getEnv "machines_bindir")     (\_ -> return bindir)
 getLibDir     = catchIO (getEnv "machines_libdir")     (\_ -> return libdir)

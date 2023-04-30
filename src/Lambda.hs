@@ -27,6 +27,8 @@ data Lambda
   | If !Lambda !Lambda !Lambda
   | Let !Binding !Lambda
   | Letrec !Binding !Lambda
+  | Mutate !String !Lambda
+  | Sequence !Lambda !Lambda
   deriving (Show)
 
 data Operation = Write | Add1 | Sub1 | IsZero | Add2 | Sub2 | Mul | GT | LT | EQ | NE | LE | GE deriving (Show)
@@ -34,6 +36,7 @@ data Operation = Write | Add1 | Sub1 | IsZero | Add2 | Sub2 | Mul | GT | LT | EQ
 data Constant
   = Integer !Int
   | Boolean !Bool
+  | Address !Int
   | Unit
   deriving (Show)
 
