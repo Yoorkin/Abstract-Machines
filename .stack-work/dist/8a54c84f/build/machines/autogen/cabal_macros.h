@@ -20,6 +20,16 @@
   (major1) == 4 && (major2) <  16 || \
   (major1) == 4 && (major2) == 16 && (minor) <= 4)
 #endif /* MIN_VERSION_base */
+/* package megaparsec-9.2.2 */
+#ifndef VERSION_megaparsec
+#define VERSION_megaparsec "9.2.2"
+#endif /* VERSION_megaparsec */
+#ifndef MIN_VERSION_megaparsec
+#define MIN_VERSION_megaparsec(major1,major2,minor) (\
+  (major1) <  9 || \
+  (major1) == 9 && (major2) <  2 || \
+  (major1) == 9 && (major2) == 2 && (minor) <= 2)
+#endif /* MIN_VERSION_megaparsec */
 /* package prettyprinter-1.7.1 */
 #ifndef VERSION_prettyprinter
 #define VERSION_prettyprinter "1.7.1"
@@ -30,6 +40,16 @@
   (major1) == 1 && (major2) <  7 || \
   (major1) == 1 && (major2) == 7 && (minor) <= 1)
 #endif /* MIN_VERSION_prettyprinter */
+/* package text-1.2.5.0 */
+#ifndef VERSION_text
+#define VERSION_text "1.2.5.0"
+#endif /* VERSION_text */
+#ifndef MIN_VERSION_text
+#define MIN_VERSION_text(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  2 || \
+  (major1) == 1 && (major2) == 2 && (minor) <= 5)
+#endif /* MIN_VERSION_text */
 /* package unordered-containers-0.2.19.1 */
 #ifndef VERSION_unordered_containers
 #define VERSION_unordered_containers "0.2.19.1"
@@ -133,7 +153,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "machines-0.1.0.0-EdluixrYoF1Hjrrtt1bsQ2-machines"
+#define CURRENT_COMPONENT_ID "machines-0.1.0.0-Gv9PjbgN6XOj3xulPchMm-machines"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"

@@ -21,13 +21,16 @@ executable machines
   build-depends:       base >= 4.7 && < 5,
                        unordered-containers ==0.2.19.1,
                        vector ==0.12.3.1,
-                       prettyprinter ==1.7.1
+                       prettyprinter ==1.7.1,
+                       megaparsec ==9.2.2,
+                       text ==1.2.5.0
   other-modules:       Builtin,
                        CCMachine,
                        CEKMachine,
                        CESKMachine,
                        Pass,
-                       Lambda
+                       Lambda,
+                       CParser
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities
