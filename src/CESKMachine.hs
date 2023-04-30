@@ -35,30 +35,55 @@ appendEnv (Env e) x c = Env $ insert x c e
 lookEnv :: Env -> String -> Closure
 lookEnv (Env e) x = e ! x
 
+storeAddress :: State -> String -> Maybe Addr
+storeAddress State { control = (_, e) } name =
+    case lookEnv e name of
+        (Const (Address addr), _) -> Just addr
+        _ -> Nothing
+
 emptyStore :: IO Store
 -- emptyStore :: MV.MVector Int (Lambda, Env)
 emptyStore = do
     vec <- MV.generate 100 (const (Const Unit, emptyEnv))
     return Store { vec = vec, used = 0 }
 
-setStore :: (Env, Store) -> String -> Closure -> IO (Env, Store)
-setStore (Env e,s) name c =
-    case lookup name e of
-        Just (Const (Address addr), _) ->
-            do MV.write (vec s) addr c
-               return (Env e, s)
-        _ -> let freshAddr = used s
-                 closure = (Const $ Address freshAddr, emptyEnv)
-              in do 
-                let ls = vec s
-                let idx = used s + 1
-                ls <- if idx == MV.length ls then MV.grow ls (idx * 2) else return ls
-                MV.unsafeWrite ls freshAddr c
-                return (appendEnv (Env e) name closure, Store { vec = ls, used = idx })
+-- setStore :: (Env, Store) -> String -> Closure -> IO (Env, Store)
+-- setStore (Env e,s) name c =
+--     case lookup name e of
+--         Just (Const (Address addr), _) ->
+--             do MV.write (vec s) addr c
+--                return (Env e, s)
+--         _ -> let freshAddr = used s
+--                  closure = (Const $ Address freshAddr, emptyEnv)
+--               in do 
+--                 let ls = vec s
+--                 let idx = used s + 1
+--                 ls <- if idx == MV.length ls then MV.grow ls (idx * 2) else return ls
+--                 MV.unsafeWrite ls freshAddr c
+--                 return (appendEnv (Env e) name closure, Store { vec = ls, used = idx })
 
-getStore :: Store -> Int -> IO Closure
-getStore s = MV.unsafeRead (vec s)
+-- getStore :: Store -> Int -> IO Closure
+-- getStore s = MV.unsafeRead (vec s)
 
+
+newStore :: State -> String -> IO (State, Addr)
+newStore State { control = (m, Env e), store = s, kont = k } name =
+     let addr = used s + 1
+         e' = insert name (Const (Address addr), emptyEnv) e
+      in do
+            let ls = vec s
+            vec' <- if addr == MV.length ls then MV.grow ls (addr * 2) else return ls
+            return (State { control = (m, Env e'), store = Store { vec = vec', used = addr }, kont = k}, addr)
+
+type Addr = Int
+
+setStore :: State -> Addr -> Closure -> IO State 
+setStore state@State { store } addr v = do
+    MV.unsafeWrite (vec store) addr v
+    return state
+
+getStore :: State -> Addr -> IO Closure
+getStore State { store } = MV.unsafeRead (vec store)
 
 data Kont
   = Mt
@@ -82,85 +107,104 @@ instance Show Kont where
     show (KSeq (m,_) k) = "KSeq " ++ show m ++ " -> " ++ show k
 
 
-data State = State (Closure, Store, Kont)
+data State = State { control :: Closure, store :: Store, kont :: Kont }
+
+controlEnv State { control = (_, e) } = e
 
 instance Show State where
-    show (State ((c,e), s, k)) =
+    show State { control = (c,e), store, kont } =
         "# lambda: \n" ++ show c ++ "\n" ++
         "# environment: \n" ++ show e ++ "\n" ++
-        "# continuation: \n" ++ show k ++ "\n" ++
+        "# continuation: \n" ++ show kont ++ "\n" ++
         "\n" 
 
 trans :: State -> IO State
 
-trans (State ((Letrec (name,expr) body, e), s, k)) = do 
-    (e1,s1) <- setStore (e,s) name (Const Unit, emptyEnv)
-    (e2,s2) <- setStore (e1,s1) name (expr, e1)
-    return $ State ((body, e2), s2, k)
+trans state = case state of
 
-trans (State ((Sequence m1 m2, e), s, k)) =
-    return $ State ((m1, e), s, KSeq (m2, e) k)
+    -- letrec
+    State { control = (Letrec (name, func) body, e), store, kont } -> do 
+        (state, addr) <- newStore state name
+        state <- setStore state addr (func, controlEnv state)
+        return state { control = (body, controlEnv state), kont }
 
-trans (State ((Const Unit, e), s, KSeq (m, _) k)) =
-    return $ State ((m, e), s, k)
+    -- intro KSeq
+    State { control = (Sequence m1 m2, e), kont } ->
+        return state { control = (m1, e), kont = KSeq (m2, e) kont }
 
-trans (State ((v,e), s, KMut name k)) | isValue v = do
-    (e', s') <- setStore (e,s) name (v,e)
-    return $ State ((Const Unit, e'), s', k)
+    -- elim KSeq
+    State { control = (Const Unit, e), kont = KSeq (m, _) kont } ->
+        return state { control = (m, e), kont }
 
-trans (State ((Mutate name expr, e), s, k)) =
-    return $ State ((expr, e), s, KMut name k)
+    -- elim KMut
+    State { control = (v,e), kont = KMut name kont } | isValue v -> 
+        case storeAddress state name of
+            Just addr -> do
+                state <- setStore state addr (v,e)
+                return state { control = (Const Unit, e), kont }
+            Nothing -> error "invalid input"
 
-trans (State ((Var x, e), s, k)) = do 
-    c <- case lookEnv e x of
-            (Const (Address addr), _) -> getStore s addr
-            var -> return var
-    return $ State (c, s, k) -- cek7
+    -- intro KMut
+    State { control = (Mutate name expr, e), kont } ->
+        return state { control = (expr, e), kont = KMut name kont }
 
-trans (State ((Apply m n, e), s, k)) = return $ State ((m, e), s, Arg (n, e) k) -- cek1
+    -- cek7  lookup variable in environment and store
+    State { control = (Var x, e) } -> do 
+        control <- case lookEnv e x of
+                (Const (Address addr), _) -> getStore state addr
+                m -> return m
+        return state { control } 
 
-trans (State ((v, e), s, Fun (Abstract x1 m, e') k))
-  | isValue v = -- && notVar v =
-      return $ State ((m, appendEnv e' x1 (v, e)), s, k) -- cek3
+    -- cek1
+    State { control = (Apply m n, e), kont } ->
+        return state { control = (m, e), kont = Arg (n, e) kont } 
 
-trans (State ((v, e), s, Arg (n, e') k))
-  | isValue v = -- && notVar v =
-      return $ State ((n, e'), s, Fun (v, e) k) -- cek4
+    -- cek3
+    State { control = (v, e), kont = Fun (Abstract x1 m, e') kont }  | isValue v -> -- && notVar v =
+        return state { control = (m, appendEnv e' x1 (v, e)), kont } 
 
-trans (State ((If m1 m2 m3, e), s, k)) =
-      return $ State ((m1, e), s, Branch (m2, e) (m3, e) k) -- intro branch
+    -- cek4
+    State { control = (v, e), kont = Arg (n, e') kont } | isValue v -> -- && notVar v =
+        return state { control = (n, e'), kont = Fun (v, e) kont } 
 
-trans (State ((Const (Boolean cond), e), s, Branch c1 c2 k)) =
-      return $ State (if cond then c1 else c2, s, k) -- elim branch
+    -- intro branch
+    State { control = (If m1 m2 m3, e), kont } ->
+      return state { control = (m1, e), kont = Branch (m2, e) (m3, e) kont } 
 
-trans (State ((Let (x, expr) body, e), s, k)) =
-      return $ State ((expr,e), s, KLet x (body, e) k)  -- intro let scope
+    -- elim branch
+    State { control = (Const (Boolean cond), _), kont = Branch c1 c2 kont } ->
+      return state { control = if cond then c1 else c2, kont } 
 
-trans (State ((v,e), s, KLet x (body, e') k)) | isValue v =
-      return $ State ((body, appendEnv e' x (v,e)), s, k)   -- elim let scope
+    -- intro let scope
+    State { control = (Let (x, expr) body, e), kont } ->
+      return state { control = (expr,e), kont = KLet x (body, e) kont }  
 
-trans (State ((Prim o (m : ns), e), s, k)) =
-  let ns' = zip ns (repeat e)
-   in return $ State ((m, e), s, Opd [] o ns' k) -- cek2
+    -- elim let scope
+    State { control = (v,e), kont = KLet x (body, e') kont } | isValue v ->
+      return state { control = (body, appendEnv e' x (v,e)), kont }    
 
-trans (State ((b@(Const _), e), s, Opd cs o [] k)) =
-  do
-    v <- invoke o (reverse (b : (fmap fst cs)))
-    return $ State ((v, e), s, k) -- cek5
+    -- cek2
+    State { control = (Prim o (m : ns), e), kont } ->
+        let ns' = zip ns (repeat e)
+        in return state { control = (m, e), kont = Opd [] o ns' kont } 
 
-trans (State ((v, e), s, Opd vs o (c : cs) k))
-  | isValue v =  -- && notVar v =
-      return $ State (c, s, Opd ((v, e) : vs) o cs k) -- cek6
+    -- cek5
+    State { control = (b@(Const _), e), kont = Opd cs o [] kont } -> do
+        v <- invoke o (reverse (b : (fmap fst cs)))
+        return state { control = (v, e), kont } 
 
-trans s = error $ "\n\nunexpected state:" ++ show s
--- trans ((Letrec bs body, e@(Env mp)), k) = let e' = Eev (union (fromList bs) )
+    -- cek6
+    State { control = (v, e), kont = Opd vs o (c : cs) kont } | isValue v ->  -- && notVar v =
+        return state { control = c, kont = Opd ((v, e) : vs) o cs kont } 
+
+    _ -> error $ "\n\nunexpected state:" ++ show state
 
 isConstOrAbstract (Const _) = True
 isConstOrAbstract (Abstract _ _) = True
 isConstOrAbstract _ = False
 
 eval' :: State -> IO State
-eval' s@(State ((v, _), _, Mt)) | isConstOrAbstract v = return s
+eval' s@State { control = (v, _), kont = Mt } | isConstOrAbstract v = return s
 eval' s = do
   s' <- trans s
 --   eval' (traceShowId s')
@@ -169,5 +213,5 @@ eval' s = do
 eval :: Lambda -> IO Lambda
 eval m = do 
     store <- emptyStore
-    let s = State ((m, emptyEnv), store, Mt) in f <$> eval' s
-        where f (State ((x, _), _, _)) = x
+    let s = State { control = (m, emptyEnv), store, kont = Mt } in f <$> eval' s
+        where f State { control = (x, _) } = x

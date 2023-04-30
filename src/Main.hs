@@ -24,7 +24,7 @@ recFib = Letrec ("fib", Abstract "x"
 main :: IO ()
 main = do
     -- eval lambda
-    let input = lambda
+    let input = recFib
     putStrLn "lambda:"
     putDocW 40 (pretty input)
     putStrLn "\nside effects:"
